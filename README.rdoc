@@ -1,6 +1,46 @@
 = burp
 
-Description goes here.
+Oh yum, look at this collection of hashes I have to manage. Each with a unique id to represent it:
+  
+yummy = [
+          {:id => :a, :data => "A"},
+          {:id => :b, :data => "B"},
+          {:id => :c, :data => "C"}
+        ]
+
+I feel like checking out :b today:
+
+Yes, you could just select what you need the boring, ugly way
+b_data = yummy.select{|node| node[:id] == :b}.first
+That's not hard, but rather than manually select it, let's just let out a hearty burp
+
+burped = Burp.new(yummy, :id)
+
+and get good old fashioned hash in return
+
+#=> { :a => {:id => :a, :data => "A" },
+      :b => {:id => :b, :data => "B" },
+      :c => {:id => :c, :data => "C" }
+
+meaning that
+b_data = burped[:b]
+
+As a special side-dish, Burp can handle things that are a bit messier as well
+
+fly_in_my_soup = [
+                   {:id => :a, :data => "A"},
+                   {:id => :b, :data => "B"},
+                   {:id => :c, :data => "C"},
+                   {:fly => :d, :data => "D"}
+        ] 
+
+yummy_soup = Burped.new(fly_in_my_soup)
+#=> { :a => {:id => :a, :data => "A" },
+      :b => {:id => :b, :data => "B" },
+      :c => {:id => :c, :data => "C" }
+
+fly = yummy_soup.left_overs
+#=> [{:fly => :d, :data => "D"}]
 
 == Contributing to burp
  
@@ -14,6 +54,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Dave M. See LICENSE.txt for
+Copyright (c) 2011 Dave Martin. See LICENSE.txt for
 further details.
 

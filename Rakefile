@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "burp"
   gem.homepage = "http://github.com/forforf/burp"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Turns an array of hashes into a hash of hashes}
+  gem.description = %Q{Tell it which hash key in the array of hashes to use as the hash id, and voila a hash is made from your array}
   gem.email = "dmarti21@gmail.com"
   gem.authors = ["Dave M"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
