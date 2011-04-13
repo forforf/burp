@@ -47,7 +47,7 @@ class Burp < Hash
       data_filter = [data_filter].flatten
       new_data = {}
       data_filter.each do |key|
-        if x.has_key?(key)
+        if key.has_key?(key)
           new_data[key] = validate(node, key)
         end
       end
