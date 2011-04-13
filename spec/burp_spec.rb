@@ -28,14 +28,14 @@ module BurpSpecH
 
   #Baseic stuff for Basic (and Advanced) Burp
 
-  NiceArray = [{:id => :a, :data => "A"},
-               {:id => :b, :data => "B"},
-               {:id => :c, :data => "C"}]
+  NiceArray = [{:id => :a, :data => "A", :other_stuff => "aaa"},
+               {:id => :b, :data => "B", :other_stuff => "bbb"},
+               {:id => :c, :data => "C", :other_stuff => "ccc"}]
  
   #notice the last id typo
-  DirtyArray = [{:id => :a, :data => "A"},
-                {:id => :b, :data => "B"},
-                {:id => :c, :data => "C"},
+  DirtyArray = [{:id => :a, :data => "A", :other_stuff => "aaa"},
+                {:id => :b, :data => "B", :other_stuff => "bbb"},
+                {:id => :c, :data => "C", :other_stuff => "ccc"},
                 {:iidd => :d, :data => "D"}]
 end
 
@@ -43,9 +43,9 @@ describe "Basic Burp" do
   before(:each) do
     @nice_array = BurpSpecH::NiceArray
 
-    @nice_burped = {:a => {:id => :a, :data => "A"},
-                    :b => {:id => :b, :data => "B"},
-                    :c => {:id => :c, :data => "C"}}
+    @nice_burped = {:a => {:id => :a, :data => "A", :other_stuff => "aaa"},
+                    :b => {:id => :b, :data => "B", :other_stuff => "bbb"},
+                    :c => {:id => :c, :data => "C", :other_stuff => "ccc"}}
 
     @not_an_array = @nice_burped #its a hash now
 
@@ -55,6 +55,10 @@ describe "Basic Burp" do
     @dirty_burped = @nice_burped
 
     @dirty_left_overs = [{:iidd => :d, :data => "D"}]
+
+    @filtered_burp =  {:a => {:data => "A"},
+                       :b => {:data => "B"},
+                       :c => {:data => "C"}}
   end
 
   it "makes a hash out of a nicely formed array" do
@@ -71,6 +75,13 @@ describe "Basic Burp" do
     my_dirty_burp.should == @dirty_burped
     my_dirty_burp.left_overs.should == @dirty_left_overs
   end
+
+  it "filters data" do
+    filtered_burp = Burp.new(@dirty_array, :id, :data)
+    filtered_burp.should == @filtered_burp
+  end
+
+  
 end
 
 describe "Advanced Burp" do
