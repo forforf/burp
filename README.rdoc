@@ -1,6 +1,6 @@
 = Burp
 == Why Burp?
-Did you ever get a list of structured data (for example an array of hash data) and get a bit of indigestion when you realize that the uniq attribute(s) of the data is buried underneath the array? Well, if you're like me you're tired of having to do something like
+Did you ever get a list of structured data (for example an array of hash data) and get a bit of indigestion when you realize that the unique attribute(s) of the data is(are) buried underneath the array? Well, if you're like me you're tired of having to do something like
 
     structured_array = list_of_stuff.map{|struc_data| organize(struc_data)}
     a_nice_hash = Hash.new[structured_array]
@@ -61,7 +61,7 @@ As a special side-dish, Burp can handle things that are a bit messier as well
                        {:fly => :d, :data => "D"}
                      ] 
 
-    yummy_soup = Burped.new(fly_in_my_soup)
+    yummy_soup = Burped.new(fly_in_my_soup, :id)
       #=> { :a => {:id => :a, :data => "A" },
             :b => {:id => :b, :data => "B" },
             :c => {:id => :c, :data => "C" }
@@ -86,7 +86,7 @@ Let's say our IronChef gem (don't go look for it, I just made that up) provides 
       end
     end
 
-   So when inspecting this array of food objects I see something like:
+So when inspecting this array of food objects I see something like:
 
     pp food_array
       #=>
@@ -153,6 +153,7 @@ But, we can go a step further, and have burp provided us just the information we
       #=> "mooch from buddy"
 
 
+Now if you'll excuse me, I'm hungry and have to grab something to eat.
 
 == Contributing to burp
  
