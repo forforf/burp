@@ -10,11 +10,11 @@ Burp provides an easier way
 == Basic Burp
 Oh yum, look at this collection of hashes I have to manage. Each with a unique id to represent it:
   
-    array_of_hashes = [
-                        {:id => :a, :data => "A"},
-                        {:id => :b, :data => "B"},
-                        {:id => :c, :data => "C"}
-                      ]
+    yummy  = [
+               {:id => :a, :data => "A", :other_stuff => "aaa"},
+               {:id => :b, :data => "B", :other_stuff => "bbb"},
+               {:id => :c, :data => "C", :other_stuff => "ccc"}
+             ]
 
 I feel like referencing :b's data today:
 
@@ -28,13 +28,29 @@ That's not hard, but rather than manually select it, let's just let out a hearty
 
 and get good old fashioned hash in return
 
-    #=> { :a => {:id => :a, :data => "A" },
-          :b => {:id => :b, :data => "B" },
-          :c => {:id => :c, :data => "C" }
+    #=> { :a => {:id => :a, :data => "A", :other_stuff => "aaa" },
+          :b => {:id => :b, :data => "B", :other_stuff => "bbb" },
+          :c => {:id => :c, :data => "C", :other_stuff => "ccc" }
 
 meaning that
 
     b_data = burped[:b]
+      #=> {:id => :b, :data => "B", :other_stuff => "bbb" }
+
+
+Burp also allows you to filter the data if desired by providing a list of fields to keep
+
+    filtered_burp = Burp.new(yummy, :id, [:data])
+
+or if there's only one field of interest and you can't be bothered with array brackets, just
+
+    filtered_burp = Burp.new(yummy, :id, :data) 
+
+will work fine as well, and will return
+
+    #=> { :a => {:data => "A"},
+          :b => {:data => "B"},
+          :c => {:data => "C"}
 
 As a special side-dish, Burp can handle things that are a bit messier as well
 
@@ -54,8 +70,89 @@ As a special side-dish, Burp can handle things that are a bit messier as well
       #=> [{:fly => :d, :data => "D"}]
 
 == Advanced Burp
+Burp's not only good for lists of hashes, it can work for a list of any arbitrary data, and you can set any key you'd like to the underlying data.
 
- TODO
+Examples Ahoy!
+
+Let's say our IronChef gem (don't go look for it, I just made that up) provides us a list of foods and some information about them, however the food information is encapsulated in its own class, something like:
+
+    class Food
+      attr_accessor :name, :tastiness, :prep_effort
+
+      def initialize(name, tastiness, prep_effort)
+        @name = name
+        @tastiness = tastiness
+        @prep_effort = prep_effort
+      end
+    end
+
+   So when inspecting this array of food objects I see something like:
+
+    pp food_array
+      #=>
+         [#<Food:0xb41368 
+            @name="bacon",
+            @prep_effort="nuke it",
+            @tastiness="awesome">,
+          #<Food:0xb41308
+            @name="tofu",
+            @prep_effort="mix it in something",
+            @tastiness="meh">,
+          #<Food:0xb412a8
+            @name="beer",
+            @prep_effort="mooch from buddy",
+            @tastiness="essential to life">]
+
+Ok, so maybe I'm just interested in the preparation of said food items, we can use the name attribute for our key, and pull out the prep effort.
+
+To do this with Burp, we can create a custom id label with a proc:
+
+    food_name = lambda{ |item| item.name }
+
+just use it like this in Burp
+
+  food_data = Burp.new(food_array, food_name)
+    #=>
+      {"bacon"=>
+        #<Food:0x8a9c8bc
+         @name="bacon",
+         @prep_effort="nuke it",
+         @tastiness="awesome">,
+       "tofu"=>
+        #<Food:0x8a9c86c
+         @name="tofu",
+         @prep_effort="mix it in something",
+         @tastiness="meh">,
+       "beer"=>
+        #<Food:0x8a9c81c
+         @name="beer",
+         @prep_effort="mooch from buddy",
+         @tastiness="essential to life">}
+
+Ah, that's a little bit better, now I can get my desired food object (beer of course) just by
+
+    food_data["beer"]
+      #=>
+         #<Food:0x8a9c81c
+         @name="beer",
+         @prep_effort="mooch from buddy",
+         @tastiness="essential to life">}
+
+and to prepare I can just call prep_effort
+
+    food_data["beer"].prep_effort
+
+But, we can go a step further, and have burp provided us just the information we want
+
+    filter = lambda{|item| item.prep_effort}
+
+    food_prep = Burp.new(food_array, food_name, filter)
+      #=> {"bacon"=>"nuke it", "tofu"=>"mix it in something", "beer"=>"mooch from buddy"}
+
+    food_prep["beer"]
+      #=> "mooch from buddy"
+
+
 
 == Contributing to burp
  
