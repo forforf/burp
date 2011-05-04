@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dave M"]
-  s.date = %q{2011-04-13}
+  s.date = %q{2011-05-04}
   s.description = %q{Tell it which hash key in the array of hashes to use as the hash id, and voila a hash is made from your array}
   s.email = %q{dmarti21@gmail.com}
   s.extra_rdoc_files = [
