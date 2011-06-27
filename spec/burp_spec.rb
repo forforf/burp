@@ -14,7 +14,8 @@ module BurpSpecH
 
   Foods = {'bacon' => {:taste =>  'awesome', :prep => 'nuke it'},
            'tofu' => {:taste => 'meh', :prep => 'mix it in something'},
-           'beer' => {:taste => 'essential to life', :prep => 'mooch from buddy'}
+           'beer' => {:taste => 'essential to life', :prep => 'mooch from buddy'},
+           'sky' => {}
           }
   FoodNames = Foods.keys
 
@@ -101,7 +102,8 @@ describe "Advanced Burp" do
     @dirty_left_overs = [{:iidd => :d, :data => "D"}]
     @filtered_burp = {'bacon' => 'nuke it',
                       'tofu' => 'mix it in something',
-                      'beer' => 'mooch from buddy'}
+                      'beer' => 'mooch from buddy',
+                      'sky' => nil}
   end
 
   it "is passed a food list" do
