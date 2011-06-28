@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    burp (0.1.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -23,6 +28,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.0.0)
+  burp!
   jeweler (~> 1.5.2)
   rcov
   rspec (~> 2.3.0)
